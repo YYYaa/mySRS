@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>学生选课</title>
+<link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
+</head>
+<body>
+<script src="../js/jquery-3.0.0.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/bootstrap.js"></script>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="col-md-12">
+			<h3>
+				学生选课系统
+			</h3>
+			<h3 class="text-center">
+				学生选课
+			</h3>
+			<div class="row-fluid">
+				<div class="col-md-2">
+					<ul class="nav nav-list">
+						<li class="nav-header">
+							选课
+						</li>
+					 	<li class="active">
+							<a href="CourseList.html">学生选课</a>
+						</li>
+						 <li class="nav-header">
+							个人中心
+						</li>
+						<li>
+						<a href="#">成绩查询</a>
+						</li> 
+					</ul>
+				</div>
+				<div class="col-md-6">
+					输入学期
+					<form class="form-search">
+						<input class="input-medium search-query" type="text" /> <button type="submit" class="btn">查找</button>
+					</form>
+					
+					<table class="table table-bordered table-hover" id="tablelist">
+						<thead>
+							<tr>
+								<th>
+									课程编号
+								</th>
+								<th>
+									详情介绍
+								</th>
+								<th>
+									选课
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									1
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									01/04/2012
+								</td>
+							<!-- 	<td>
+									Default
+								</td> -->
+							</tr>
+							<!-- <tr class="success">
+								<td>
+									1
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									01/04/2012
+								</td>
+								<td>
+									Approved
+								</td>
+							</tr>
+							<tr class="error">
+								<td>
+									2
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									02/04/2012
+								</td>
+								<td>
+									Declined
+								</td>
+							</tr>
+							<tr class="warning">
+								<td>
+									3
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									03/04/2012
+								</td>
+								<td>
+									Pending
+								</td>
+							</tr>
+							<tr class="info">
+								<td>
+									4
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									04/04/2012
+								</td>
+								<td>
+									Call in to confirm
+								</td>
+							</tr> -->
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-4">
+				<h3>已选课程(课程表)</h3>	
+				<table class="table table-bordered table-hover" id="tablelist2" >
+						<thead>
+							<tr>
+								<th>
+									选课编号
+								</th>
+								<th>
+									课程名称
+								</th>
+								<th>
+									退选
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									1
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								
+							
+							</tr>
+							 <tr class="success">
+								<td>
+									1
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									01/04/2012
+								</td>
+								
+							</tr>
+							<tr class="error">
+								<td>
+									2
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									02/04/2012
+								</td>
+								
+							</tr>
+							<tr class="warning">
+								<td>
+									3
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									03/04/2012
+								</td>
+								
+							</tr>
+							<tr class="info">
+								<td>
+									4
+								</td>
+								<td>
+									TB - Monthly
+								</td>
+								<td>
+									04/04/2012
+								</td>
+							</tr> 
+						</tbody>
+					</table>	
+					
+				
+				</div>
+			</div>
+			<a id="modal-971411" href="#modal-container-971411" role="button" class="btn" data-toggle="modal">触发遮罩窗体</a>
+			<div id="modal-container-971411" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 id="myModalLabel">
+						标题栏
+					</h3>
+				</div>
+				<div class="modal-body">
+					<p>
+						保存成功
+					</p>
+				</div>
+				<div class="modal-footer">
+					 <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button> <button class="btn btn-primary">保存设置</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {	
+	$.getJSON("../scheduleOfClassServlet",function(jsonData) {
+	var html="";
+	for (var i = 0; i < jsonData.data.length; i++) {
+		if(i%3==0){
+			html+="<tr class=\"warning\">";
+		}else if(i%3==1){
+			html+="<tr class=\"success\">";
+		}else if(i%3==2){
+			html+="<tr class=\"info\">";
+		}
+		html+="<td>"+jsonData.data[i].id+"</td>";
+		html+="<td>"+jsonData.data[i].text+"</td>"; 
+		html+="<td><a class='xuanke' data='"+jsonData.data[i].id+"'>选课</a></td></tr>";   
+	} 
+	$("#tablelist tbody tr").remove(); 
+	$("#tablelist tbody").append(html);
+	
+	 $(".xuanke").click(function(){
+		 alert($(this).attr("data"));
+		$.get("../StudentAddSection",{id:$(this).attr("data")},function(data) {
+		alert(data);
+ 		location.reload(); 
+		 });
+	 });
+	}); 
+	
+	$.getJSON("../SelectedSectionList",function(jsonData) { 
+		var html="";
+		for (var i = 0; i < jsonData.rows.length; i++) {
+			if(i%3==0){
+				html+="<tr class=\"warning\">";
+			}else if(i%3==1){
+				html+="<tr class=\"success\">";
+			}else if(i%3==2){
+				html+="<tr class=\"info\">";
+			}
+			html+="<td>"+jsonData.rows[i].courseNo+"-"+jsonData.rows[i].sectionNo+"</td>";
+			html+="<td>"+jsonData.rows[i].courseName+"</td>";
+			html+="<td><a>退选</a></td></tr> "; 
+		} 
+		$("#tablelist2 tbody tr").remove(); 
+		$("#tablelist2 tbody").append(html);
+				}); 
+		});		
+		
+
+</script>
+</body>
+</html>
